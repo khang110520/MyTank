@@ -26,9 +26,14 @@ public class TankShooting : MonoBehaviour
     private BaseShoot currentShoot;
     private int shootIndex;
 
+    public BaseShell[] listShell;
+    public BaseShell currentShell;
+    private int shellIndex;
+
     private void Awake()
     {
         currentShoot = listShoot[0];
+        currentShell = listShell[0];
     }
 
     private void OnEnable()
@@ -59,6 +64,16 @@ public class TankShooting : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.P) && m_PlayerNumber == 2)
         {
             ChangeShoot();
+        }
+
+        if (Input.GetKeyDown(KeyCode.R) && m_PlayerNumber == 1)
+        {
+            ChangeShell();
+        }
+
+        if (Input.GetKeyDown(KeyCode.O) && m_PlayerNumber == 2)
+        {
+            ChangeShell();
         }
 
         if (interval > 0)
@@ -156,5 +171,12 @@ public class TankShooting : MonoBehaviour
         int newShootIndex = (shootIndex + 1) % listShoot.Length;
         currentShoot = listShoot[newShootIndex];
         shootIndex = newShootIndex;
+    }
+
+    public void ChangeShell()
+    {
+        int newShootIndex = (shellIndex + 1) % listShell.Length;
+        currentShell = listShell[newShootIndex];
+        shellIndex = newShootIndex;
     }
 }

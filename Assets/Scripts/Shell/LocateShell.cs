@@ -2,20 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[CreateAssetMenu(menuName = "Shell/LocateShell")]
 public class LocateShell : BaseShell
 {
-    public override void StypeShell(Transform transform, float m_LocateRadius, LayerMask m_TankMask, TeamID Team, Transform tankTarget = null)
+    public GameObject Shell;
+
+    public override void StypeShell(Transform transformActive, float time)
     {
-        Collider[] tankLocate = Physics.OverlapSphere(transform.position, m_LocateRadius, m_TankMask);
+        Shell.transform.position = Vector3.Lerp(Shell.transform.position, transformActive.position, time);
+        Shell.transform.LookAt(transformActive.position);
 
-        for (int i = 0; i < tankLocate.Length; i++)
-        {
-            var teamID = tankLocate[i].GetComponent<TankShooting>();
-
-            if (teamID.Team != Team)
-            {
-                tankTarget = teamID.transform;
-            }
-        }
+        time += Time.deltaTime * 0.3f;
     }
+
 }

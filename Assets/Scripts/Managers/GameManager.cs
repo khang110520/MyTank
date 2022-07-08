@@ -12,13 +12,11 @@ public class GameManager : MonoBehaviour
     public GameObject m_TankPrefab;             // Reference to the prefab the players will control.
     public TankManager[] m_Tanks;               // A collection of managers for enabling and disabling different aspects of the tanks.
 
-
     private int m_RoundNumber;                  // Which round the game is currently on.
     private WaitForSeconds m_StartWait;         // Used to have a delay whilst the round starts.
     private WaitForSeconds m_EndWait;           // Used to have a delay whilst the round or game ends.
     private TankManager m_RoundWinner;          // Reference to the winner of the current round.  Used to make an announcement of who won.
     private TankManager m_GameWinner;           // Reference to the winner of the game.  Used to make an announcement of who won.
-
 
     private void Start()
     {
@@ -32,7 +30,6 @@ public class GameManager : MonoBehaviour
         // Once the tanks have been created and the camera is using them as targets, start the game.
         StartCoroutine(GameLoop());
     }
-
 
     private void SpawnAllTanks()
     {

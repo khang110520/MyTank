@@ -2,10 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[CreateAssetMenu(menuName = "Shell/MuddyShell")]
 public class MuddyShell : BaseShell
 {
-    public override void StypeShell(Transform transform, float m_LocateRadius, LayerMask m_TankMask, TeamID Team, Transform tankTarget = null)
+    public GameObject mireObj;
+
+    public override void StypeShell(Transform transformActive, float time)
     {
-        throw new System.NotImplementedException();
+        GameObject shellInstance = Instantiate(mireObj, transformActive.position, transformActive.rotation);
+        Destroy(shellInstance, time);
     }
 }

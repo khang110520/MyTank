@@ -5,7 +5,6 @@ using System.Collections;
 public class ShellExplosion : MonoBehaviour
 {
     public TeamID Team;
-    public GameObject mireObj;
 
     public LayerMask m_TankMask;                        // Used to filter what the explosion affects, this should be set to "Players".
     public ParticleSystem m_ExplosionParticles;         // Reference to the particles that will play on explosion.
@@ -16,6 +15,7 @@ public class ShellExplosion : MonoBehaviour
     public float m_ExplosionRadius = 5f;                // The maximum distance away from the explosion tanks can be and are still affected.
 
     public float m_LocateRadius = 20f;
+    public float m_ShootLocateRadius = 200f;
 
     private Coroutine HomingCoroutine;
 
@@ -23,6 +23,9 @@ public class ShellExplosion : MonoBehaviour
     private TankShooting m_teamID;
     private Transform tankTarget = null;
     public int m_PlayerNumber;
+
+    private TankShooting tankShooting;
+
 
     private void Update()
     {
@@ -46,13 +49,19 @@ public class ShellExplosion : MonoBehaviour
 
     private IEnumerator Target()
     {
-        yield return new WaitForSeconds(0.2f);
+        //yield return new WaitForSeconds(0.2f);
+        Collider[] shootLocate = Physics.OverlapSphere(transform.position, m_LocateRadius, m_TankMask);
+        for (int i = 0; i < shootLocate.Length; i++)
+        {
+            tankShooting = shootLocate[i].GetComponent<TankShooting>();
+        }
+        
 
         float time = 0;
 
         while (time < 1)
         {
-            if (tankTarget != null)
+            if ((tankTarget != null) && (tankShooting.currentShell.name == "LocateShell"))
             {
                 transform.position = Vector3.Lerp(transform.position, tankTarget.position, time);
                 transform.LookAt(tankTarget.position);
@@ -79,15 +88,9 @@ public class ShellExplosion : MonoBehaviour
         }
     }
 
-    private void Mire()
+    private void ChooseShell(Transform transformActive, float time)
     {
-        GameObject shellInstance =  Instantiate(mireObj, m_ExplosionParticles.gameObject.transform.position, m_ExplosionParticles.gameObject.transform.rotation);
-        Destroy(shellInstance, m_MaxLifeTime);
-    }    
-
-    private void chooseShell()
-    {
-
+        tankShooting.currentShell.StypeShell(transformActive, time);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -95,9 +98,8 @@ public class ShellExplosion : MonoBehaviour
         // Collect all the colliders in a sphere from the shell's current position to a radius of the explosion radius.
         Collider[] colliders = Physics.OverlapSphere(transform.position, m_ExplosionRadius, m_TankMask);
 
-        Mire();
-        Debug.Log(m_ExplosionParticles.gameObject.transform.position);
-
+        if (tankShooting.currentShell.name == "MuddyShell")
+            ChooseShell(m_ExplosionParticles.gameObject.transform, m_MaxLifeTime);
 
         // Go through all the colliders...
         for (int i = 0; i < colliders.Length; i++)
