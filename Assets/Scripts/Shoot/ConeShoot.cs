@@ -5,20 +5,32 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Shoot/Cone")]
 public class ConeShoot : BaseShoot
 {
-    public override void Fire(Transform firePoint, float Force, TeamID teamID)
+    public float shotAngle = 15f;
+
+    public override void Fire(Transform firePoint, float m_CurrentLaunchForce, float m_MinLaunchForce, float deltaTime, TeamID teamID, BaseShell currentShell, bool m_Fired, AudioSource m_ShootingAudio, AudioClip m_FireClip)
     {
+        m_Fired = true;
+
         for (int i = -2; i <= 2; i++)
         {
-            Vector3 bulletPosition = firePoint.position;
             Vector3 bulletRotation = firePoint.rotation.eulerAngles;
-            bulletRotation.y += 15f * i;
+            bulletRotation.y += shotAngle * i;
 
-            shell.GetComponent<ShellExplosion>().Team = teamID;
+            Shell shell = projectilePrefab.GetComponent<Shell>();
+            shell.team = teamID;
+            shell.currentShell = currentShell;
 
             Rigidbody shellInstance =
-            Instantiate(shell, bulletPosition, Quaternion.Euler(bulletRotation)) as Rigidbody;
+                Instantiate(projectilePrefab, firePoint.position, Quaternion.Euler(bulletRotation)) as Rigidbody;
 
-            shellInstance.velocity = Force * shellInstance.transform.forward; ;
+            shellInstance.velocity = m_CurrentLaunchForce * shellInstance.transform.forward;
         }
+
+        // Change the clip to the firing clip and play it.
+        m_ShootingAudio.clip = m_FireClip;
+        m_ShootingAudio.Play();
+
+        // Reset the launch force.  This is a precaution in case of missing button events.
+        m_CurrentLaunchForce = m_MinLaunchForce;
     }
 }
