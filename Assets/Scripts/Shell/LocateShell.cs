@@ -7,28 +7,25 @@ public class LocateShell : BaseShell
 {
     public float m_LocateRadius;
     public float m_ShellSpeed;
+    private Transform tankTarget;
 
-    private Transform tankTarget = null;
-
-    public override void DoUpdate(Transform transform)
+    public override void DoStart()
     {
-        Debug.Log(tankTarget);
-        Target(transform);
+        if(tankTarget != null)
+        {
+            tankTarget = null;
+        }
     }
 
-    public override void DoOnTrigger(Transform transform, float m_ExplosionRadius, LayerMask m_TankMask, TeamID team, float m_ExplosionForce, ParticleSystem m_ExplosionParticles, AudioSource m_ExplosionAudio)
+    public override void DoUpdate(Transform transform, LayerMask m_TankMask, TeamID team)
     {
-        Locate(transform, m_TankMask, team);
-
-        base.DoOnTrigger(transform, m_ExplosionRadius, m_TankMask, team, m_ExplosionForce, m_ExplosionParticles, m_ExplosionAudio);
-        tankTarget = null;
+        FindTarget(transform, m_TankMask, team);
     }
 
-    private void Locate(Transform transform, LayerMask m_TankMask, TeamID team)
+    public void FindTarget(Transform transform, LayerMask m_TankMask, TeamID team)
     {
+        //Locate
         Collider[] tankLocate = Physics.OverlapSphere(transform.position, m_LocateRadius, m_TankMask);
-
-        Debug.Log(tankLocate);
 
         for (int i = 0; i < tankLocate.Length; i++)
         {
@@ -40,10 +37,7 @@ public class LocateShell : BaseShell
             }
         }
 
-    }
-
-    private void Target(Transform transform)
-    {
+        //Target
         if ((tankTarget != null))
         {
             transform.position = Vector3.Lerp(transform.position, tankTarget.position, m_ShellSpeed * Time.deltaTime);

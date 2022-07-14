@@ -9,10 +9,21 @@ public class RapidShoot : BaseShoot
     public int numBulletsInTurn = 3;
 
     private float currentTimeDistance;
+    private int currentNumBulletsInTurn;
 
-    public override void DoUpdate(float deltaTime)
+    public override void DoUpdate(Transform firePoint, float m_CurrentLaunchForce)
     {
-        currentTimeDistance -= deltaTime;
+        currentTimeDistance -= Time.deltaTime;
+        if (currentTimeDistance < 0 && currentNumBulletsInTurn > 0)
+        {
+            Rigidbody shellInstance =
+            Instantiate(projectilePrefab, firePoint.position, firePoint.rotation) as Rigidbody;
+
+            // Set the shell's velocity to the launch force in the fire position's forward direction.
+            shellInstance.velocity = m_CurrentLaunchForce * firePoint.forward; ;
+            currentNumBulletsInTurn--;
+            currentTimeDistance = timeDistance;
+        }
     }
 
     public override void Fire(Transform firePoint, float m_CurrentLaunchForce, float m_MinLaunchForce, float deltaTime, TeamID teamID, BaseShell currentShell, bool m_Fired, AudioSource m_ShootingAudio, AudioClip m_FireClip)
@@ -24,19 +35,15 @@ public class RapidShoot : BaseShoot
         shell.team = teamID;
         shell.currentShell = currentShell;
 
-        // Create an instance of the shell and store a reference to it's rigidbody.
-        Rigidbody shellInstance =
-            Instantiate(projectilePrefab, firePoint.position, firePoint.rotation) as Rigidbody;
+        currentNumBulletsInTurn = numBulletsInTurn;
 
-        // Set the shell's velocity to the launch force in the fire position's forward direction.
-        shellInstance.velocity = m_CurrentLaunchForce * firePoint.forward; ;
+        DoUpdate(firePoint, m_CurrentLaunchForce);
 
         // Change the clip to the firing clip and play it.
         m_ShootingAudio.clip = m_FireClip;
         m_ShootingAudio.Play();
 
         // Reset the launch force.  This is a precaution in case of missing button events.
-        m_CurrentLaunchForce = m_MinLaunchForce;
+        //m_CurrentLaunchForce = m_MinLaunchForce;
     }
-
 }

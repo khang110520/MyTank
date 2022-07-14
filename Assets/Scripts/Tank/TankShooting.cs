@@ -76,7 +76,7 @@ public class TankShooting : MonoBehaviour
             ChangeShell();
         }
 
-        currentShoot.DoUpdate(Time.deltaTime);
+        currentShoot.DoUpdate(m_FireTransform, m_CurrentLaunchForce);
 
         if (interval > 0)
         {

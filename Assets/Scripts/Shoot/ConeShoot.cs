@@ -31,6 +31,6 @@ public class ConeShoot : BaseShoot
         m_ShootingAudio.Play();
 
         // Reset the launch force.  This is a precaution in case of missing button events.
-        m_CurrentLaunchForce = m_MinLaunchForce;
+        //m_CurrentLaunchForce = m_MinLaunchForce;
     }
 }

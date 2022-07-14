@@ -7,7 +7,7 @@ public abstract class BaseShoot : ScriptableObject
     //m_MinLaunchForce
     //m_MaxLaunchForce
 
-    public virtual void DoUpdate(float deltaTime)
+    public virtual void DoUpdate(Transform firePoint, float m_CurrentLaunchForce)
     {
         
     }
