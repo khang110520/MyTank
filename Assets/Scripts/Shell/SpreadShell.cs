@@ -19,16 +19,18 @@ public class SpreadShell : BaseShell
         isRealy = false;
         numTargeted = numTarget;
 
-        
+
     }
 
     public override void DoOnTriggerEnter(Transform transformExplosion, string other, GameObject gameObject)
     {
         Debug.Log(numTargeted);
+        Debug.Log(other);
+
 
         if (other == "Tank" && numTargeted > 0)
         {
-            Debug.Log(11111111);
+            Debug.Log(1111);
             isRealy = true;
             numTargeted--;
         }
@@ -42,43 +44,50 @@ public class SpreadShell : BaseShell
             }
             Destroy(gameObject);
         }
-
-        if (nextTarget != tankTarget)
-        {
-            tankTarget = nextTarget;
-        }
     }
 
     public override void DoUpdate(Transform transform, LayerMask m_TankMask, TeamID team)
     {
         if (isRealy)
         {
+            Debug.Log("Find");
             FindTarget(transform, m_TankMask, team);
         }
-        Debug.Log(isRealy);
+        
     }
 
     public void FindTarget(Transform transform, LayerMask m_TankMask, TeamID team)
     {
+        
         //Locate
         Collider[] tankLocate = Physics.OverlapSphere(transform.position, m_LocateRadius, m_TankMask);
 
-        for (int i = 0; i < tankLocate.Length; i++)
+        for (int i = 0; i < tankLocate.Length - 1; i++)
         {
             var teamID = tankLocate[i].GetComponent<TankShooting>();
 
+
             if (teamID.Team != team)
             {
-                nextTarget = teamID.transform;
+                Debug.Log(teamID.transform);
+
+                if (nextTarget == null)
+                {
+                    nextTarget = teamID.transform;
+                }
             }
         }
+
+
 
         //Target
         if ((nextTarget != null))
         {
+            Debug.Log("target");
             transform.position = Vector3.Lerp(transform.position, nextTarget.position, m_ShellSpeed * Time.deltaTime);
             transform.LookAt(nextTarget.position);
             tankTarget = nextTarget;
+            isRealy = false;
         }
     }
 
