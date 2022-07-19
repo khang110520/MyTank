@@ -17,13 +17,13 @@ public class TankManager
     private TankMovement m_Movement;       
     private TankShooting m_Shooting;
     private GameObject m_CanvasGameObject;
-    private Shell m_Shell;
+    private Bullet m_Shell;
 
     public void Setup()
     {
         m_Movement = m_Instance.GetComponent<TankMovement>();
         m_Shooting = m_Instance.GetComponent<TankShooting>();
-        m_Shell = m_Instance.GetComponent<Shell>();
+        m_Shell = m_Instance.GetComponent<Bullet>();
         m_CanvasGameObject = m_Instance.GetComponentInChildren<Canvas>().gameObject;
 
         m_Movement.m_PlayerNumber = m_PlayerNumber;

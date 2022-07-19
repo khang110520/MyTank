@@ -2,11 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Shell/LocateShell")]
-public class LocateShell : BaseShell
+[CreateAssetMenu(menuName = "Bullet/LocateBullet")]
+public class LocateBullet : BaseBullet
 {
-    public float m_LocateRadius;
+    /*public float m_LocateRadius;
     public float m_ShellSpeed;
+    public float damage;
+
     private Transform tankTarget;
 
     public override void DoStart()
@@ -45,8 +47,15 @@ public class LocateShell : BaseShell
         }
     }
 
-    public override float CalculateDamage(Vector3 targetRigidbody)
+    public override void Apply(GameObject target, GameObject gameObject)
     {
-        throw new System.NotImplementedException();
-    }
+        TankHealth targetHealth = target.GetComponent<TankHealth>();
+
+        if (!targetHealth)
+        {
+            // Deal this damage to the tank.
+            targetHealth.TakeDamage(damage);
+        }
+        Destroy(gameObject);
+    }*/
 }

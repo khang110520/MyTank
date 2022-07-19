@@ -26,14 +26,14 @@ public class RapidShoot : BaseShoot
         }
     }
 
-    public override void Fire(Transform firePoint, float m_CurrentLaunchForce, float m_MinLaunchForce, float deltaTime, TeamID teamID, BaseShell currentShell, bool m_Fired, AudioSource m_ShootingAudio, AudioClip m_FireClip)
+    public override void Fire(Transform firePoint, float m_CurrentLaunchForce, float m_MinLaunchForce, float deltaTime, TeamID teamID, BaseBullet currentBullet, bool m_Fired, AudioSource m_ShootingAudio, AudioClip m_FireClip)
     {
         // Set the fired flag so only Fire is only called once.
         m_Fired = true;
 
-        Shell shell = projectilePrefab.GetComponent<Shell>();
+        Bullet shell = projectilePrefab.GetComponent<Bullet>();
         shell.team = teamID;
-        shell.currentShell = currentShell;
+        shell.currentBullet = currentBullet;
 
         currentNumBulletsInTurn = numBulletsInTurn;
 

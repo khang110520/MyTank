@@ -26,14 +26,14 @@ public class TankShooting : MonoBehaviour
     private BaseShoot currentShoot;
     private int shootIndex;
 
-    public BaseShell[] listShell;
-    public BaseShell currentShell;
+    public BaseBullet[] listBullet;
+    public BaseBullet currentBullet;
     private int shellIndex;
 
     private void Awake()
     {
         currentShoot = listShoot[0];
-        currentShell = listShell[0];
+        currentBullet = listBullet[0];
     }
 
     private void OnEnable()
@@ -68,12 +68,12 @@ public class TankShooting : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.R) && m_PlayerNumber == 1)
         {
-            ChangeShell();
+            ChangeEffect();
         }
 
         if (Input.GetKeyDown(KeyCode.O) && m_PlayerNumber == 2)
         {
-            ChangeShell();
+            ChangeEffect();
         }
 
         currentShoot.DoUpdate(m_FireTransform, m_CurrentLaunchForce);
@@ -124,7 +124,7 @@ public class TankShooting : MonoBehaviour
     private void Fire()
     {
         interval = currentShoot.interval;
-        currentShoot.Fire(m_FireTransform, m_CurrentLaunchForce, m_MinLaunchForce, Time.deltaTime, Team, currentShell, m_Fired, m_ShootingAudio, m_FireClip);
+        currentShoot.Fire(m_FireTransform, m_CurrentLaunchForce, m_MinLaunchForce, Time.deltaTime, Team, currentBullet, m_Fired, m_ShootingAudio, m_FireClip);
         m_Fired = true;
     }
 
@@ -135,10 +135,10 @@ public class TankShooting : MonoBehaviour
         shootIndex = newShootIndex;
     }
 
-    public void ChangeShell()
+    public void ChangeEffect()
     {
-        int newShootIndex = (shellIndex + 1) % listShell.Length;
-        currentShell = listShell[newShootIndex];
+        int newShootIndex = (shellIndex + 1) % listBullet.Length;
+        currentBullet = listBullet[newShootIndex];
         shellIndex = newShootIndex;
     }
 }

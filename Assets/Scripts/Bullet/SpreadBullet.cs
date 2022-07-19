@@ -2,12 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Shell/SpreadShell")]
-public class SpreadShell : BaseShell
+[CreateAssetMenu(menuName = "Bullet/SpreadBullet")]
+public class SpreadBullet : BaseBullet
 {
-    public float m_LocateRadius;
+   /* public float m_LocateRadius;
     public float m_ShellSpeed;
     public int numTarget = 2;
+    public float damage;
 
     private Transform tankTarget;
     private Transform nextTarget;
@@ -18,11 +19,9 @@ public class SpreadShell : BaseShell
     {
         isRealy = false;
         numTargeted = numTarget;
-
-
     }
 
-    public override void DoOnTriggerEnter(Transform transformExplosion, string other, GameObject gameObject)
+    public void Condition(Transform transformExplosion, string other, GameObject gameObject)
     {
         Debug.Log(numTargeted);
         Debug.Log(other);
@@ -58,7 +57,6 @@ public class SpreadShell : BaseShell
 
     public void FindTarget(Transform transform, LayerMask m_TankMask, TeamID team)
     {
-        
         //Locate
         Collider[] tankLocate = Physics.OverlapSphere(transform.position, m_LocateRadius, m_TankMask);
 
@@ -78,8 +76,6 @@ public class SpreadShell : BaseShell
             }
         }
 
-
-
         //Target
         if ((nextTarget != null))
         {
@@ -91,8 +87,15 @@ public class SpreadShell : BaseShell
         }
     }
 
-    public override float CalculateDamage(Vector3 targetRigidbody)
+    public override void Apply(GameObject target, GameObject gameObject)
     {
-        throw new System.NotImplementedException();
-    }
+        TankHealth targetHealth = target.GetComponent<TankHealth>();
+
+        if (!targetHealth)
+        {
+            // Deal this damage to the tank.
+            targetHealth.TakeDamage(damage);
+        }
+        Destroy(gameObject);
+    }*/
 }

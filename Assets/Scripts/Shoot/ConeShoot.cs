@@ -7,7 +7,7 @@ public class ConeShoot : BaseShoot
 {
     public float shotAngle = 15f;
 
-    public override void Fire(Transform firePoint, float m_CurrentLaunchForce, float m_MinLaunchForce, float deltaTime, TeamID teamID, BaseShell currentShell, bool m_Fired, AudioSource m_ShootingAudio, AudioClip m_FireClip)
+    public override void Fire(Transform firePoint, float m_CurrentLaunchForce, float m_MinLaunchForce, float deltaTime, TeamID teamID, BaseBullet currentBullet, bool m_Fired, AudioSource m_ShootingAudio, AudioClip m_FireClip)
     {
         m_Fired = true;
 
@@ -16,9 +16,9 @@ public class ConeShoot : BaseShoot
             Vector3 bulletRotation = firePoint.rotation.eulerAngles;
             bulletRotation.y += shotAngle * i;
 
-            Shell shell = projectilePrefab.GetComponent<Shell>();
+            Bullet shell = projectilePrefab.GetComponent<Bullet>();
             shell.team = teamID;
-            shell.currentShell = currentShell;
+            shell.currentBullet = currentBullet;
 
             Rigidbody shellInstance =
                 Instantiate(projectilePrefab, firePoint.position, Quaternion.Euler(bulletRotation)) as Rigidbody;
