@@ -7,14 +7,25 @@ public class PoisonPercentEffect : Effect
 {
     public float damagePercent;
 
-    public override void DoUpdate(TankHealth targetHealth)
+    public override void DoUpdate(TankHealth targetHealth, TankMovement tankMovement, TankShooting tankShooting)
     {
-        
-        targetHealth.TakeDamage(targetHealth.m_StartingHealth * damagePercent / 100);
+        currentEffectTime -= Time.deltaTime;
+        if (IsEndEffect())
+        {
+            targetHealth.TakeDamage(targetHealth.m_StartingHealth * damagePercent / 100);
+            IsStart = true;
+            Debug.Log("End");
+        }
     }
 
     public override void StartEffect()
     {
+
+        if (IsStart)
+        {
+            Debug.Log("Start");
+            IsStart = false;
+        }
     }
 
 }

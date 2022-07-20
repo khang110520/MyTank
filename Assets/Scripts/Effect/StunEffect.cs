@@ -2,21 +2,26 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Effect/PoisionTimeEffect")]
-public class PoisionTimeEffect : Effect
+[CreateAssetMenu(menuName = "Effect/StunEffect")]
+public class StunEffect : Effect
 {
     public override void DoUpdate(TankHealth targetHealth, TankMovement tankMovement, TankShooting tankShooting)
     {
-
         currentEffectTime -= Time.deltaTime;
 
-        if (currentEffectTime > 0)
+        if (targetHealth != null && currentEffectTime > 0)
         {
-            targetHealth.TakeDamage(baseDamage);
+            Debug.Log("StopMove");
+            tankMovement.StopMove();
+            tankShooting.StopFire();
+            //targetHealth.TakeDamage(baseDamage);
         }
-        if (IsEndEffect())
+        if(IsEndEffect())
         {
+            tankMovement.ContinueMove();
+            tankShooting.ContinueFire();
             IsStart = true;
+            Debug.Log("ContinueMove");
         }
     }
 

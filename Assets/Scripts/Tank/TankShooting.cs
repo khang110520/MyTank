@@ -30,10 +30,14 @@ public class TankShooting : MonoBehaviour
     public BaseBullet currentBullet;
     private int shellIndex;
 
+    public bool IsCanFire;
+
     private void Awake()
     {
         currentShoot = listShoot[0];
         currentBullet = listBullet[0];
+
+        IsCanFire = true;
     }
 
     private void OnEnable()
@@ -123,11 +127,24 @@ public class TankShooting : MonoBehaviour
 
     private void Fire()
     {
-        interval = currentShoot.interval;
-        currentShoot.Fire(m_FireTransform, m_CurrentLaunchForce, m_MinLaunchForce, Time.deltaTime, Team, currentBullet, m_Fired, m_ShootingAudio, m_FireClip);
-        m_Fired = true;
+        if (IsCanFire)
+        {
+            interval = currentShoot.interval;
+            currentShoot.Fire(m_FireTransform, m_CurrentLaunchForce, m_MinLaunchForce, Time.deltaTime, Team, currentBullet, m_Fired, m_ShootingAudio, m_FireClip);
+            m_Fired = true;
+        }
     }
 
+    public void StopFire()
+    {
+        IsCanFire = false;
+    }
+
+    public void ContinueFire()
+    {
+        IsCanFire = true;
+    }
+    
     private void ChangeShoot()
     {
         int newShootIndex = (shootIndex + 1) % listShoot.Length;

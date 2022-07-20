@@ -12,6 +12,7 @@ public class Bullet : MonoBehaviour
 
     private void Start()
     {
+        currentBullet.DoStart();
     }
 
     private void Update()
@@ -25,8 +26,6 @@ public class Bullet : MonoBehaviour
         {
             other.GetComponent<TankEffect>().AddEffect(currentBullet.currentEffect);
         }
-
-        currentBullet.DoStart(gameObject);
 
         m_ExplosionParticles.transform.parent = null;
 

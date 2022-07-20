@@ -5,7 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Bullet/LocateBullet")]
 public class LocateBullet : BaseBullet
 {
-    /*public float m_LocateRadius;
+    public float m_LocateRadius;
     public float m_ShellSpeed;
     public float damage;
 
@@ -13,7 +13,7 @@ public class LocateBullet : BaseBullet
 
     public override void DoStart()
     {
-        if(tankTarget != null)
+        if (tankTarget != null)
         {
             tankTarget = null;
         }
@@ -26,36 +26,30 @@ public class LocateBullet : BaseBullet
 
     public void FindTarget(Transform transform, LayerMask m_TankMask, TeamID team)
     {
-        //Locate
-        Collider[] tankLocate = Physics.OverlapSphere(transform.position, m_LocateRadius, m_TankMask);
-
-        for (int i = 0; i < tankLocate.Length; i++)
+        if (tankTarget == null)
         {
-            var teamID = tankLocate[i].GetComponent<TankShooting>();
+            //Locate
+            Collider[] tankLocate = Physics.OverlapSphere(transform.position, m_LocateRadius, m_TankMask);
 
-            if (teamID.Team != team)
+            for (int i = 0; i < tankLocate.Length; i++)
             {
-                tankTarget = teamID.transform;
+                var teamID = tankLocate[i].GetComponent<TankShooting>();
+
+                if (teamID.Team != team)
+                {
+                    tankTarget = teamID.transform;
+                }
             }
         }
+        
 
-        //Target
-        if ((tankTarget != null))
+        if (tankTarget != null)
         {
+            //Target
+
             transform.position = Vector3.Lerp(transform.position, tankTarget.position, m_ShellSpeed * Time.deltaTime);
             transform.LookAt(tankTarget.position);
         }
     }
 
-    public override void Apply(GameObject target, GameObject gameObject)
-    {
-        TankHealth targetHealth = target.GetComponent<TankHealth>();
-
-        if (!targetHealth)
-        {
-            // Deal this damage to the tank.
-            targetHealth.TakeDamage(damage);
-        }
-        Destroy(gameObject);
-    }*/
 }

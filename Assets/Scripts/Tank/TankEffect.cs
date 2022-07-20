@@ -8,33 +8,35 @@ public class TankEffect : MonoBehaviour
     public TankMovement tankMovement;
     public TankShooting tankShooting;
 
-    public Effect currentEffect;
     public List<Effect> listEffect;
 
-    private void Awake()
-    {
-    }
-
-    private void Start()
-    {
-        currentEffect.StartEffect();
-    }
+    private float currentEffectTime;
 
     private void Update()
     {
         if (listEffect.Count > 0)
         {
-            foreach (Effect effect in listEffect)
+            int i = 0;
+            while (i < listEffect.Count)
             {
-                currentEffect = effect;
-                currentEffect.DoUpdate(tankHealth);
-                listEffect.Remove(effect);
+                Debug.Log("Start");
+                listEffect[i].StartEffect();
+                listEffect[i].DoUpdate(tankHealth, tankMovement, tankShooting);
+                if(listEffect[i].IsEndEffect())
+                {
+                    listEffect.RemoveAt(i);
+                }
+                else
+                {
+                    i++;
+                }
             }
         }
     }
 
     public void AddEffect(Effect effect)
     {
+        Debug.Log("dang ky");
         listEffect.Add(effect);
     }
 }

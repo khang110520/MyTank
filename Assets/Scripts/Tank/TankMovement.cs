@@ -9,7 +9,7 @@ public class TankMovement : MonoBehaviour
     public AudioClip m_EngineIdling;       
     public AudioClip m_EngineDriving;      
     public float m_PitchRange = 0.2f;
-
+    public bool IsCanMove;
     
     private string m_MovementAxisName;     
     private string m_TurnAxisName;         
@@ -21,6 +21,7 @@ public class TankMovement : MonoBehaviour
 
     private void Awake()
     {
+        IsCanMove = true;
         m_Rigidbody = GetComponent<Rigidbody>();
     }
 
@@ -96,13 +97,26 @@ public class TankMovement : MonoBehaviour
 
     private void Move()
     {
-        // Create a vector in the direction the tank is facing with a magnitude based on the input, speed and the time between frames.
-        Vector3 movement = transform.forward * m_MovementInputValue * m_Speed * Time.deltaTime;
+        if (IsCanMove)
+        {
+            // Create a vector in the direction the tank is facing with a magnitude based on the input, speed and the time between frames.
+            Vector3 movement = transform.forward * m_MovementInputValue * m_Speed * Time.deltaTime;
 
-        // Apply this movement to the rigidbody's position.
-        m_Rigidbody.MovePosition(m_Rigidbody.position + movement);
+            // Apply this movement to the rigidbody's position.
+            m_Rigidbody.MovePosition(m_Rigidbody.position + movement);
+        }
+
     }
 
+    public void StopMove()
+    {
+        IsCanMove = false;
+    }
+
+    public void ContinueMove()
+    {
+        IsCanMove = true;
+    }
 
     private void Turn()
     {
