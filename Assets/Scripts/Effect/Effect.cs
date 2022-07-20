@@ -5,8 +5,8 @@ using System;
 
 public abstract class Effect : ScriptableObject
 {
-    public float baseDamage;
     public float effectTime;
+    [HideInInspector]
     public float currentEffectTime;
     public bool IsStart = true;
 
@@ -18,7 +18,6 @@ public abstract class Effect : ScriptableObject
 
     public virtual bool IsEndEffect()
     {
-
         return currentEffectTime < 0;
     }
 

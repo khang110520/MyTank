@@ -2,27 +2,29 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Effect/StunEffect")]
-public class StunEffect : Effect
+[CreateAssetMenu(menuName = "Effect/HealthEffect")]
+public class HealthEffect : Effect
 {
+    public float healthUp;
+    private float maxHealth = 100f;
+
     public override void DoUpdate(TankHealth targetHealth, TankMovement tankMovement, TankShooting tankShooting)
     {
         currentEffectTime -= Time.deltaTime;
 
-        if (targetHealth != null && currentEffectTime > 0)
+        if (currentEffectTime > 0)
         {
-            Debug.Log("StopMove");
-            tankMovement.StopMove();
-            tankShooting.StopFire();
-            //targetHealth.TakeDamage(baseDamage);
+            targetHealth.TakeDamage(-healthUp);
+
+            if (targetHealth.m_CurrentHealth > maxHealth)
+            {
+                targetHealth.m_CurrentHealth = maxHealth;
+            }
         }
 
-        if(IsEndEffect())
+        if (IsEndEffect())
         {
-            tankMovement.ContinueMove();
-            tankShooting.ContinueFire();
             IsStart = true;
-            Debug.Log("ContinueMove");
         }
     }
 

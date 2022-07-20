@@ -10,8 +10,6 @@ public class TankEffect : MonoBehaviour
 
     public List<Effect> listEffect;
 
-    private float currentEffectTime;
-
     private void Update()
     {
         if (listEffect.Count > 0)

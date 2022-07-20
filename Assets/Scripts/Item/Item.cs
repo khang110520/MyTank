@@ -4,13 +4,14 @@ using UnityEngine;
 
 public class Item : MonoBehaviour
 {
-    public ItemEffect itemEffect;
+    public Effect currentEffect;
 
     private void OnTriggerEnter(Collider other)
     {
-        //check player
-
+        if (other.tag == "Tank")
+        {
+            other.GetComponent<TankEffect>().AddEffect(currentEffect);
+        }
         Destroy(gameObject);
-        itemEffect.Apply(other.gameObject);
     }
 }

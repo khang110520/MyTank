@@ -5,6 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Effect/PoisonPercentEffect")]
 public class PoisonPercentEffect : Effect
 {
+    public float baseDamage;
     public float damagePercent;
 
     public override void DoUpdate(TankHealth targetHealth, TankMovement tankMovement, TankShooting tankShooting)
@@ -20,7 +21,6 @@ public class PoisonPercentEffect : Effect
 
     public override void StartEffect()
     {
-
         if (IsStart)
         {
             Debug.Log("Start");

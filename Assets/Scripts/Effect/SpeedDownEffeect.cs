@@ -2,27 +2,28 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Effect/StunEffect")]
-public class StunEffect : Effect
+[CreateAssetMenu(menuName = "Effect/SpeedDownEffeect")]
+public class SpeedDownEffeect : Effect
 {
+    public float SpeedDown;
+    private float currentSpeedDown;
+
     public override void DoUpdate(TankHealth targetHealth, TankMovement tankMovement, TankShooting tankShooting)
     {
         currentEffectTime -= Time.deltaTime;
-
-        if (targetHealth != null && currentEffectTime > 0)
+        Debug.Log(tankMovement.m_Speed);
+        if (!IsEndEffect())
         {
-            Debug.Log("StopMove");
-            tankMovement.StopMove();
-            tankShooting.StopFire();
-            //targetHealth.TakeDamage(baseDamage);
+            Debug.Log("Up");
+            tankMovement.m_Speed -= currentSpeedDown;
+            currentSpeedDown = 0;
         }
 
-        if(IsEndEffect())
+        if (IsEndEffect())
         {
-            tankMovement.ContinueMove();
-            tankShooting.ContinueFire();
+            tankMovement.m_Speed += SpeedDown;
             IsStart = true;
-            Debug.Log("ContinueMove");
+            Debug.Log("Stop");
         }
     }
 
@@ -32,6 +33,7 @@ public class StunEffect : Effect
         {
             Debug.Log("Start");
             IsStart = false;
+            currentSpeedDown = SpeedDown;
             currentEffectTime = effectTime;
         }
     }

@@ -14,6 +14,7 @@ public class LockMoveEffect : Effect
             Debug.Log("StopMove");
             tankMovement.StopMove();
         }
+
         if (IsEndEffect())
         {
             tankMovement.ContinueMove();
@@ -24,7 +25,6 @@ public class LockMoveEffect : Effect
 
     public override void StartEffect()
     {
-
         if (IsStart)
         {
             Debug.Log("Start");
@@ -32,5 +32,4 @@ public class LockMoveEffect : Effect
             currentEffectTime = effectTime;
         }
     }
-
 }
